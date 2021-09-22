@@ -1240,8 +1240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ad78997d116c24ea2ee86b12403d81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  versionName: 1.1
-  sceneToLoad: MovementScene
+  versionName: 1.3
+  sceneToLoad: ClimbGameScene
   hostRoomInput: {fileID: 690506998}
   joinRoomInput: {fileID: 1121509577}
   usernameInput: {fileID: 787725372}

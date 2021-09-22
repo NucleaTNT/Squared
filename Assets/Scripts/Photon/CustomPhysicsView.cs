@@ -6,10 +6,10 @@ public class CustomPhysicsView : MonoBehaviourPun, IPunObservable
 {
     private Rigidbody2D objectRb;
     private Vector2 networkPosition;
-    
+
     [Range(0, 50)] public float TeleportDistance;
 
-    private void Awake() 
+    private void Awake()
     {
         objectRb = GetComponent<Rigidbody2D>();
         networkPosition = objectRb.position;
@@ -33,9 +33,9 @@ public class CustomPhysicsView : MonoBehaviourPun, IPunObservable
         else objectRb = GetComponent<Rigidbody2D>();
     }
 
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
-        if (!photonView.IsMine) 
+        if (!photonView.IsMine)
         {
             if (Vector2.Distance(objectRb.position, networkPosition) > TeleportDistance) objectRb.position = networkPosition;
             objectRb.position = Vector2.MoveTowards(objectRb.position, networkPosition, Time.fixedDeltaTime);

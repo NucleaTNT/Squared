@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4542099402986998452}
   - component: {fileID: 1611923155248702873}
   - component: {fileID: 4542099402986998458}
-  - component: {fileID: 3327578205802136643}
+  - component: {fileID: -8732358690967256836}
   - component: {fileID: 8717810946023593936}
   - component: {fileID: -2210222444435994992}
   m_Layer: 7
@@ -182,11 +182,11 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 0
   ObservedComponents:
-  - {fileID: 3327578205802136643}
+  - {fileID: -8732358690967256836}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &3327578205802136643
+--- !u!114 &-8732358690967256836
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -195,10 +195,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4542099402986998451}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 099e4bd1e0a9fce4586faca7429e24f8, type: 3}
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TeleportDistance: 1.5
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!114 &8717810946023593936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,17 +215,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRb: {fileID: 4542099402986998455}
-  moveSpeed: 4
-  jumpVelocity: 7.5
+  moveSpeed: 3
+  jumpVelocity: 6.5
   lowJumpMultiplier: 2.25
   fallMultiplier: 1.5
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 64
   wasJumpPressed: 0
   isJumpHeld: 0
   isGrounded: 0
-  isDoubleJumpAvailable: 1
+  isDoubleJumpAvailable: 0
 --- !u!114 &-2210222444435994992
 MonoBehaviour:
   m_ObjectHideFlags: 0

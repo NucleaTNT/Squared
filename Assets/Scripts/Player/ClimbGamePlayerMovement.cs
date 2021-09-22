@@ -4,7 +4,6 @@ public class ClimbGamePlayerMovement : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D playerRb;
     [SerializeField] private float moveSpeed, jumpVelocity, lowJumpMultiplier, fallMultiplier;
-    [SerializeField] private LayerMask groundLayers;
     [SerializeField] private bool wasJumpPressed, isJumpHeld, isGrounded, isDoubleJumpAvailable = true;
 
     private void HandleX() 
@@ -20,7 +19,11 @@ public class ClimbGamePlayerMovement : MonoBehaviour
         if (wasJumpPressed) 
         {
             if (isGrounded) { playerRb.velocity += Vector2.up * jumpVelocity; isGrounded = false; }
-            else if (isDoubleJumpAvailable) { playerRb.velocity += Vector2.up * jumpVelocity; isDoubleJumpAvailable = false; }
+            else if (isDoubleJumpAvailable) 
+            { 
+                playerRb.velocity += (Vector2.up * jumpVelocity) + ((playerRb.velocity.y < 0) ? new Vector2(0, -(playerRb.velocity.y)) : Vector2.zero); 
+                isDoubleJumpAvailable = false;
+            }
         }
 
         if (playerRb.velocity.y < 0) playerRb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
@@ -36,8 +39,9 @@ public class ClimbGamePlayerMovement : MonoBehaviour
         HandleY();
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public void ResetJump()
     {
-        if (((1 << other.gameObject.layer) & groundLayers) != 0) { isGrounded = true; isDoubleJumpAvailable = true; }
+        isGrounded = true; 
+        isDoubleJumpAvailable = true; 
     }
 }

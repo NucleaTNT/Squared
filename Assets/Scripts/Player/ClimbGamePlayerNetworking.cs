@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class ClimbGamePlayerNetworking : PlayerNetworking
 {
+    private static ClimbCameraMovement cameraInstance;
+
     protected override void SetInstantiationData(PhotonMessageInfo photonMessageInfo)
     {
-        Debug.Log((int)photonMessageInfo.photonView.InstantiationData[1]);
+        if (cameraInstance == null) cameraInstance = Camera.main.GetComponent<ClimbCameraMovement>();
+        if (photonMessageInfo.Sender.IsLocal) cameraInstance.SetTargetTransform(((GameObject)photonMessageInfo.Sender.TagObject).transform);
     }
 }
