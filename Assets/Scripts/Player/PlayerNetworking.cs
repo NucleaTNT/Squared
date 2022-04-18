@@ -2,54 +2,57 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
-public struct PlayerInfo
+namespace Dev.NucleaTNT.Squared.Networking
 {
-    public int Wins;
-    public int PlayerColorIndex;
-    public int PlayerID;
-    public string Username;
-}
-
-public class PlayerNetworking : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
-{
-    [SerializeField] private MonoBehaviour[] scriptsToIgnore;
-    private Color[] playerColors = { Color.red, Color.blue, Color.green, Color.yellow, Color.white };
-    public static GameObject LocalPlayerInstance; 
-    public PlayerInfo Info;
-
-    protected void Awake() 
+    public struct PlayerInfo
     {
-        if (photonView.IsMine) LocalPlayerInstance = this.gameObject;
-        if (!photonView.IsMine) foreach (MonoBehaviour script in scriptsToIgnore) script.enabled = false;
+        public int PlayerColorIndex;
+        public int PlayerID;
+        public string PlayerName;
     }
 
-    public void OnPhotonInstantiate(PhotonMessageInfo photonMessageInfo) 
+    public class PlayerNetworking : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
     {
-        GameObject instantiatedObj = this.gameObject;
-        
-        photonMessageInfo.Sender.TagObject = instantiatedObj;
-        Info.PlayerColorIndex = (int)photonMessageInfo.photonView.InstantiationData[0];
-        Info.PlayerID = photonMessageInfo.Sender.ActorNumber;
-        Info.Username = (string)photonMessageInfo.Sender.NickName;
+        public static GameObject LocalPlayerInstance;
+        public PlayerInfo PlayerInfo;
 
-        SetInstantiationData(photonMessageInfo);
+        [SerializeField] private MonoBehaviour[] _scriptsToIgnore;
+        private static readonly Color[] _playerColors = {Color.red, Color.blue, Color.green, Color.yellow, Color.white};
 
-        Debug.Log($"OnPhotonInstantiate\n{instantiatedObj}\n{Info.PlayerColorIndex}\n{Info.PlayerID}\n{Info.Username}");
+        public void DisableNetworkScripts()
+        {
+            if (!photonView.IsMine) foreach (MonoBehaviour script in _scriptsToIgnore) script.enabled = false;
+        }
 
-        photonView.RPC("UpdatePlayerAppearance", RpcTarget.AllBufferedViaServer, Info.PlayerID);
-    }
+        public void OnPhotonInstantiate(PhotonMessageInfo photonMessageInfo)
+        {
+            photonMessageInfo.Sender.TagObject = gameObject;
+            PlayerInfo.PlayerColorIndex = (int) photonMessageInfo.photonView.InstantiationData[0];
+            PlayerInfo.PlayerID = photonMessageInfo.Sender.ActorNumber;
+            PlayerInfo.PlayerName = photonMessageInfo.Sender.NickName;
+            gameObject.name = $"{PlayerInfo.PlayerName} (PlayerObject)";
 
-    protected virtual void SetInstantiationData(PhotonMessageInfo photonMessageInfo) {}
+            SetInstantiationData(photonMessageInfo);
+            if (photonMessageInfo.Sender.IsLocal) LocalPlayerInstance = gameObject;
 
-    [PunRPC]
-    protected void UpdatePlayerAppearance(int playerID)
-    {
-        GameObject playerGO = (GameObject)PhotonNetwork.CurrentRoom.GetPlayer(playerID).TagObject;
-        PlayerInfo playerInfo = playerGO.GetComponent<PlayerNetworking>().Info;
+            Debug.Log($"Instantiated New Player: [{PlayerInfo.PlayerID}]{PlayerInfo.PlayerName}[{PlayerInfo.PlayerColorIndex}]");
+            // photonView.RPC("UpdatePlayerAppearance", RpcTarget.AllBuffered, PlayerInfo.PlayerID);
+            gameObject.GetComponent<SpriteRenderer>().color = _playerColors[PlayerInfo.PlayerColorIndex];
+            gameObject.GetComponentInChildren<Text>().text = PlayerInfo.PlayerName;
+        }
 
-        Debug.Log($"RPC Received: UpdatePlayerAppearance -> [{playerID}]{playerInfo.Username}[{playerInfo.PlayerID}]");
+        protected virtual void SetInstantiationData(PhotonMessageInfo photonMessageInfo) { }
 
-        playerGO.GetComponent<SpriteRenderer>().color = playerColors[playerInfo.PlayerColorIndex];
-        playerGO.GetComponentInChildren<Text>().text = playerInfo.Username;
+        [PunRPC]
+        protected void UpdatePlayerAppearance(int playerID)
+        {
+            GameObject playerGO = (GameObject)PhotonNetwork.CurrentRoom.GetPlayer(playerID).TagObject;
+            PlayerInfo playerInfo = playerGO.GetComponent<PlayerNetworking>().PlayerInfo;
+            
+            Debug.Log($"RPC Received: UpdatePlayerAppearance -> [{playerInfo.PlayerID}]{playerInfo.PlayerName}[{playerInfo.PlayerColorIndex}]");
+            
+            playerGO.GetComponent<SpriteRenderer>().color = _playerColors[playerInfo.PlayerColorIndex];
+            playerGO.GetComponentInChildren<Text>().text = playerInfo.PlayerName;
+        }
     }
 }

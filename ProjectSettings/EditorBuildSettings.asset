@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ClimbGameScene.unity
     guid: 9a513d56dceeb65498a9a0e1ae94f598
+  - enabled: 1
+    path: Assets/Scenes/ClimbGameLobbyScene.unity
+    guid: d1a8347353dac6949903ac6f3d6a5c88
   m_configObjects: {}

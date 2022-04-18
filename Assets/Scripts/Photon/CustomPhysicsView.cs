@@ -4,41 +4,40 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class CustomPhysicsView : MonoBehaviourPun, IPunObservable
 {
-    private Rigidbody2D objectRb;
-    private Vector2 networkPosition;
+    private Rigidbody2D _objectRb;
+    private Vector2 _networkPosition;
 
     [Range(0, 50)] public float TeleportDistance;
 
     private void Awake()
     {
-        objectRb = GetComponent<Rigidbody2D>();
-        networkPosition = objectRb.position;
+        _objectRb = GetComponent<Rigidbody2D>();
+        _networkPosition = _objectRb.position;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (objectRb != null)
+        if (_objectRb != null)
             if (stream.IsWriting)
             {
-                stream.SendNext(objectRb.position);
-                stream.SendNext(objectRb.velocity);
+                stream.SendNext(_objectRb.position);
+                stream.SendNext(_objectRb.velocity);
             } else
             {
-                networkPosition = (Vector2)stream.ReceiveNext();
-                objectRb.velocity = (Vector2)stream.ReceiveNext();
+                _networkPosition = (Vector2)stream.ReceiveNext();
+                _objectRb.velocity = (Vector2)stream.ReceiveNext();
 
                 float lag = Mathf.Abs((float)((PhotonNetwork.Time - info.SentServerTime)));
-                networkPosition += objectRb.velocity * lag;
+                _networkPosition += _objectRb.velocity * lag;
             }
-        else objectRb = GetComponent<Rigidbody2D>();
+        else _objectRb = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
     {
-        if (!photonView.IsMine)
-        {
-            if (Vector2.Distance(objectRb.position, networkPosition) > TeleportDistance) objectRb.position = networkPosition;
-            objectRb.position = Vector2.MoveTowards(objectRb.position, networkPosition, Time.fixedDeltaTime);
-        }
+        if (photonView.IsMine) return;
+       
+        if (Vector2.Distance(_objectRb.position, _networkPosition) > TeleportDistance) _objectRb.position = _networkPosition;
+        _objectRb.position = Vector2.MoveTowards(_objectRb.position, _networkPosition, Time.fixedDeltaTime);
     }
 }

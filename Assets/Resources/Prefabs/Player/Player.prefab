@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 4542099402986998455}
   - component: {fileID: 4542099402986998452}
   - component: {fileID: 4542099402986998458}
+  - component: {fileID: 2345645260831733150}
   - component: {fileID: 4542099402986998454}
-  - component: {fileID: -4498844647860349574}
   - component: {fileID: 3327578205802136643}
   m_Layer: 7
   m_Name: Player
@@ -107,7 +107,7 @@ Rigidbody2D:
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &4542099402986998452
@@ -159,6 +159,20 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &2345645260831733150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4542099402986998451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3437537c0da5af94698a5cd44d777e07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptsToIgnore:
+  - {fileID: 4542099402986998454}
 --- !u!114 &4542099402986998454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,31 +185,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a9032fc716bffc4ea9f29da94d18392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerRb: {fileID: 4542099402986998455}
-  moveSpeed: 4
-  jumpVelocity: 7.5
-  lowJumpMultiplier: 2.25
-  fallMultiplier: 1.5
-  groundLayers:
+  _playerRb: {fileID: 4542099402986998455}
+  _moveSpeed: 4
+  _jumpVelocity: 7.5
+  _lowJumpMultiplier: 2.25
+  _fallMultiplier: 1.5
+  _groundLayers:
     serializedVersion: 2
     m_Bits: 64
-  isGrounded: 0
-  isJumpPressed: 0
---- !u!114 &-4498844647860349574
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4542099402986998451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3437537c0da5af94698a5cd44d777e07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scriptsToIgnore:
-  - {fileID: 4542099402986998454}
-  - {fileID: -4498844647860349574}
+  _isGrounded: 0
+  _isJumpPressed: 0
 --- !u!114 &3327578205802136643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,7 +374,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e00995507c2406448b4c8429136104dd, type: 3}
+    m_Font: {fileID: 12800000, guid: 4a4df204c321f9c40b0dbfb1baaffb4c, type: 3}
     m_FontSize: 100
     m_FontStyle: 0
     m_BestFit: 0
